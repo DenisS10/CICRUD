@@ -1,0 +1,26 @@
+.tableDiv{
+    margin-top: 5%;
+    width: 80%;
+    margin-left: 2%;
+    /*float:left;*/
+}
+.formDivAdd{
+    width: 50%;
+    margin-left: 2%;
+    margin-top: 1%;
+   /* float:left;*/
+  //  border: 1px solid blue;
+}
+.formDivLogin{
+    width: 50%;
+    margin-left: 40%;
+    margin-top: 15%;
+    /* float:left;*/
+//  border: 1px solid blue;
+}
+.btnSend{
+    border: 1px solid black;
+}
+.inp{
+    margin-top: 1%;
+}
