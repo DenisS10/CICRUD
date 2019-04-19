@@ -75,7 +75,6 @@ class Tasks extends CI_Controller
         $deadline = $this->input->post('deadline');
 
 
-
         $currDate = time();
         $this->db->query("insert into `task` (`user_id`,`task`, `deadline`,`creation_date`) values($userId,'$task',$deadline,$currDate)");
 
@@ -90,7 +89,7 @@ class Tasks extends CI_Controller
         $this->load->database();
         $this->load->view('header', ['title' => 'Delete']);
         $numberOfRecord = $this->input->get('numberOfRecord');
-        $numberOfRecordMod=intval($numberOfRecord);
+        $numberOfRecordMod = intval($numberOfRecord);
 
         $this->db->query("DELETE FROM task WHERE id = $numberOfRecordMod");
 
@@ -100,5 +99,37 @@ class Tasks extends CI_Controller
     public function Modify()
     {
         $this->load->database();
+        $this->load->view('header', ['title' => 'Delete']);
+        $id = $this->input->get('id');
+
+
+        $query = $this->db->query("SELECT `task`,`deadline` FROM task WHERE `id` = $id");
+        $this->load->view('tasks/modify_view', ['res' => $query->result()]);
+
+        $this->load->view('footer');
+
+    }
+
+    public function Save()
+    {
+        header('location: index');
+        $this->load->database();
+
+        $id = isset($_GET['id']) ? $_GET['id'] : '';
+        $modTask = isset($_GET['modTask']) ? $_GET['modTask'] : '';
+        $modDeadline = isset($_GET['modDeadline']) ? $_GET['modDeadline'] : '';
+        $this->input->get('id');
+        $this->input->get('modTask');
+        $this->input->get('modDeadline');
+
+
+            $currDate = time();
+
+            $this->db->query("UPDATE `task` SET `task` = '$modTask', `deadline` = $modDeadline,`mod_date`= $currDate where id = $id");
+
+
+
+
+        $this->load->view('footer');
     }
 }

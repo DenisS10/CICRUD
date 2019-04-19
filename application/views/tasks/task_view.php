@@ -51,7 +51,7 @@
         <tr>
             <td class="<?= $customThemeR ?>"><?= $task->task ?></td>
             <td class="<?= $customThemeR ?>"><?= $task->deadline . ' hours' ?></td>
-            <td class="<?= $customThemeR ?>"><a class="btn btn-primary" href="modify.php?id=<?= $idDb ?>">Modify</a>
+            <td class="<?= $customThemeR ?>"><a class="btn btn-primary" href="modify?id=<?= $idDb ?>">Modify</a>
             </td>
             <td class="<?= $customThemeR ?>"><a class="btn btn-danger"
                                                 href="delete?numberOfRecord=<?= $idDb ?>">Delete</a>
