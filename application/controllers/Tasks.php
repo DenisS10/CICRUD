@@ -14,7 +14,7 @@ class Tasks extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
-       // $this->load->database();
+        // $this->load->database();
     }
 
 
@@ -33,7 +33,7 @@ class Tasks extends CI_Controller
         foreach ($query->result() as $user) {
             $logPass = password_verify($pass, $user->password);
             if ($login == $user->login && $logPass == true) {
-            //    print_r($user->login);
+                //    print_r($user->login);
 
                 $this->session->id = $user->id;
                 $this->session->auth = 'ok';
@@ -54,25 +54,51 @@ class Tasks extends CI_Controller
         $this->load->database();
         $query = $this->db->query("SELECT `id`,`user_id`,`task`,`deadline` FROM task WHERE `user_id` = $id");
 
-       // print_r($query->result());
+        // print_r($query->result());
 //        foreach ($query->result() as $task) {
 //
 //        }
 
-        $this->load->view('tasks/task_view',['res'=>$query->result()]);
+        $this->load->view('tasks/task_view', ['res' => $query->result()]);
         $this->load->view('footer');
     }
 
-    public function Add($task, $deadline)
+    public function Add()
     {
+        header('location: index');
+        $this->load->database();
         $this->load->view('header', ['title' => 'Index']);
+        $userId = $this->session->id;
+
+
+        $task = $this->input->post('task');
+        $deadline = $this->input->post('deadline');
+
+
+
+        $currDate = time();
+        $this->db->query("insert into `task` (`user_id`,`task`, `deadline`,`creation_date`) values($userId,'$task',$deadline,$currDate)");
+
+        //mysqli_query($this->db,$querySave);
 
         $this->load->view('footer');
     }
 
-    public function MgetSession()
+    public function Delete()
     {
-        $id = $this->session->id;
-        return $id;
+        header('location: index');
+        $this->load->database();
+        $this->load->view('header', ['title' => 'Delete']);
+        $numberOfRecord = $this->input->get('numberOfRecord');
+        $numberOfRecordMod=intval($numberOfRecord);
+
+        $this->db->query("DELETE FROM task WHERE id = $numberOfRecordMod");
+
+        $this->load->view('footer');
+    }
+
+    public function Modify()
+    {
+        $this->load->database();
     }
 }

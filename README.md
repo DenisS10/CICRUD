@@ -1,2 +1,0 @@
-# tableaddremove
-Default CRUD
