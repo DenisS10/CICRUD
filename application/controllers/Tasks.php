@@ -47,7 +47,10 @@ class Tasks extends CI_Controller
 
     public function index()
     {
-        if (!$this->session->auth = 'ok' || $this->session->auth != 'ok')
+        if (!$this->session->auth || $this->session->auth != 'ok')
+            header('location: login');
+
+        if ($this->session->id == null)
             header('location: login');
         $id = $this->session->id;
         $this->load->view('header', ['title' => 'Index']);
@@ -61,7 +64,10 @@ class Tasks extends CI_Controller
 
         $this->load->view('tasks/task_view', ['res' => $query->result()]);
         $this->load->view('footer');
+
+
     }
+
 
     public function Add()
     {
@@ -123,13 +129,78 @@ class Tasks extends CI_Controller
         $this->input->get('modDeadline');
 
 
-            $currDate = time();
+        $currDate = time();
 
-            $this->db->query("UPDATE `task` SET `task` = '$modTask', `deadline` = $modDeadline,`mod_date`= $currDate where id = $id");
-
-
+        $this->db->query("UPDATE `task` SET `task` = '$modTask', `deadline` = $modDeadline,`mod_date`= $currDate where id = $id");
 
 
+        $this->load->view('footer');
+    }
+
+    public function Logout()
+    {
+        if (!$this->session->auth = 'ok' || $this->session->auth != 'ok')
+            header('location: login');
+        if ($this->session->auth = 'ok' && $this->session->auth == 'ok')
+            header('location: login');
+        session_destroy();
+    }
+
+    public function Lk() //My Account
+    {
+        $this->load->view('header', ['title' => 'Index']);
+        $this->load->database();
+        $oldPass = $this->input->post('oldPass');
+        $newPass = $this->input->post('newPass');
+        $newRepeatPass = $this->input->post('newRepeatPass');
+        $id = $this->session->id;
+        //echo $id;
+
+        $query = $this->db->query("SELECT `id`,`login`,`password`,`user_name` FROM users");
+
+
+        foreach ($query->result() as $user) {
+            //echo '<pre>';
+//            print_r($user);
+
+            $logPass = password_verify($oldPass, $user->password);
+            //echo $logPass ;
+            if ($newPass == $newRepeatPass) {
+                $newHashPass = password_hash($newPass, PASSWORD_DEFAULT);
+                // echo $newHashPass;
+            } else
+                $newHashPass = '';
+            if ($user->id == $id) {
+                //  echo '$user->id == $id';
+                if ($logPass == true) {
+                    // echo '$logPass == true';
+                    //$tempUser = $user->login;
+                    $this->db->query("UPDATE `users` SET `password`= '$newHashPass' WHERE `id` = $id ");//UPDATE `users` SET `login`='www' WHERE (`id`='71')
+
+                }
+
+            }
+
+        }
+        $this->load->view('tasks/lk_view');
+        $this->load->view('footer');
+    }
+
+    public function SignUp()
+    {
+        $this->load->view('header', ['title' => 'Index']);
+        $this->load->database();
+
+        $signLogin = $this->input->post('signLogin');
+        $signPass = $this->input->post('signPass');
+        $signName = $this->input->post('signName');
+
+
+
+        $currDate = time();
+        $signHashPass = password_hash($signPass, PASSWORD_DEFAULT);
+        $this->db->query("insert into `users`(`login`, `password`, `user_name`,`first_time`) values('$signLogin','$signHashPass','$signName',$currDate)");
+        $this->load->view('tasks/signup_view');
         $this->load->view('footer');
     }
 }

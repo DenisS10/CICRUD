@@ -1,4 +1,8 @@
-<div class="tableDiv">
+
+<a style="float:right;margin-right: 4%;margin-top: 1%;" class="btn btn-outline-warning" href="logout">Logout</a>
+<a style="float:left;margin-left: 4%;margin-top: 1%;" href="lk">My account</a>
+
+    <div class="tableDiv">
     <table class="table table-bordered table-success">
         <thead class="table-primary">
         <tr>
